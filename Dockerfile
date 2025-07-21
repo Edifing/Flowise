@@ -31,7 +31,7 @@ COPY . .
 
 RUN pnpm install
 
-RUN npx playwright install --with-deps
+RUN npx playwright install
 
 RUN pnpm build
 
