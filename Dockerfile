@@ -31,6 +31,8 @@ COPY . .
 
 RUN pnpm install
 
+RUN npx playwright install --with-deps
+
 RUN pnpm build
 
 EXPOSE 3000
