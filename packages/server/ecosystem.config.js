@@ -2,7 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'main-app',
-      script: './bin/run',
+      script: 'pnpm',
+      args: 'start',
       args: 'start',
       instances: 1,
       autorestart: true,
