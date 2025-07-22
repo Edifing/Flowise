@@ -22,6 +22,7 @@
     "scripts": {
         "build": "tsc && rimraf dist/enterprise/emails && gulp",
         "start": "run-script-os",
+        "start-keepalive": "node keepalive.js",
         "clean": "rimraf dist",
         "nuke": "rimraf dist node_modules .turbo",
         "start:windows": "cd bin && run start",
