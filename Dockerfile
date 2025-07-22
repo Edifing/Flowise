@@ -4,34 +4,33 @@
 # Run image
 # docker run -d -p 3000:3000 flowise
 
-# USAREMOS UNA IMAGEN MÁS COMPATIBLE (DEBIAN SLIM EN LUGAR DE ALPINE)
-FROM node:20-slim
+FROM node:20-alpine
+RUN apk add --update libc6-compat python3 make g++
+# needed for pdfjs-dist
+RUN apk add --no-cache build-base cairo-dev pango-dev
 
-# Install dependencies needed for Playwright
-RUN apt-get update && apt-get install -yq libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss1 --no-install-recommends
+# Install Chromium
+RUN apk add --no-cache chromium
 
 # Install curl for container-level health checks
-RUN apt-get install -yq curl --no-install-recommends
+RUN apk add --no-cache curl
 
-# Install PNPM globally
+#install PNPM globaly
 RUN npm install -g pnpm
 
-# Tell Playwright to use the browsers we install
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin/playwright
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 WORKDIR /usr/src
 
 # Copy app source
 COPY . .
 
-# Install app dependencies
 RUN pnpm install
 
-# Install Playwright browsers
-RUN npx playwright install --with-deps
+# Install Playwright browsers (sin --with-deps)
+RUN npx playwright install
 
-# Build the app
 RUN pnpm build
 
 EXPOSE 3000
